@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500&family=Teko:wght@400;500&display=swap');
+
+h1, h2 {
+	font-family: Teko;
+	/*font-size: 2em;*/
+}
+h2 {
+	font-size: 1.5em; /*1em = 16px;*/
+}
+p.lead {
+	font-family: Arial;
+}
+label {
+	font-family: Roboto;
+}
+p {
+	font-family: Roboto;
+	font-size: 20pt;
+	font-weight: 500;
+}
+.btn {
+	font-family: Roboto;
+	text-transform: uppercase;
+}
+.color {
+	background: #000000;
+}
+@media only screen and (max-width: 768px) {
+	div.MarkRyk {
+  		right: 50px;
+  	}
+}
+.text{
+	font-size: 6pt;
+}
+.MarkRyk {
+	position: relative;
+	text-align: right;
+	font-family: 'Teko', cursive;
+	font-size: 25px;
+	font-weight: 400;
+	color: black;
+	left: 700px;
+	top: 70px;
+}
+/*a.btn_index {
+	width: 150px;
+	height: 50px;
+}*/
