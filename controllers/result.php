@@ -4,6 +4,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<title> Contador de palavras </title>
+	<meta charset="utf-8">
 </head>
 <body>
 	<div class="container">
@@ -13,26 +14,56 @@
 				<div class="jumbotron" style="background-color: #70FFF6;">
 					<ul class="nav nav-pills justify-content-end">
 					  <li class="nav-item">
-					    <a class="nav-link btn btn-outline-dark" href="index.php"> Início </a>
+					    <a class="nav-link btn btn-outline-dark" href="../index.php"> Início </a>
 					  </li>
 					</ul>
 					<h1 class="display-4"> Contador de palavras </h1>
-					<hr class="my-4">
-					<p class="lead"> Entre com os dados correspondentes e coloque a música; iremos contar as palavras </p>
-					<form action="controllers/result.php" method="POST">
-						<label for="bandname"> Banda/Cantor </label>
-						<input class="form-control" type="text" name="band_name" id="bandname" required>
-						<br>
-						<label for="musicname"> Nome da música </label>
-						<input class="form-control" type="text" name="music_name" id="musicname" required>
-						<br>
-						<label for="lyricmusic"> Letra </label>
-						<textarea class="form-control" name="lyric_music" id="lyricmusic"></textarea>
-						<br>
-						<button class="btn btn-dark btn-lg color"> Consultar </button>	
-					</form>
-					<br><br>
-				
+					<?php
+						include_once "validate.php";
+						if (isset($_POST['band_name']) && isset($_POST['music_name']) && isset($_POST['lyric_music'])){
+							//var_dump(load_function($_POST['lyric_music']));
+							//load_function($_POST['lyric_music'])
+							
+							echo "<p><strong> Música completa </strong></p>";
+							complete_song($_POST['lyric_music']);
+							
+							echo "<br><br>";
+							echo "<p><strong> Qtde: </strong>".str_word_count($_POST['lyric_music'])." palavras no total</p>";
+
+							echo "<br><br>";
+
+							echo "<p><strong> Música completa sem repetição de palavras </strong></p>";
+							unique_words_in_song($_POST['lyric_music']);
+							
+							//echo "<br>";
+
+							count_words($_POST['lyric_music']);
+						}
+					?>
+					<div class="container">
+						<div class="row">
+							<div class="col">
+								<p class="text"> Palavras na ordem da música </p>
+								<?php
+									show_music_order($_POST['lyric_music']);
+								?>
+							</div>
+							<div class="col">
+								<p class="text"> Ordenado pelas palavras </p>
+								<?php
+									show_word_order($_POST['lyric_music']);
+								?>
+							</div>
+							<div class="col">
+								<p class="text"> Ordenado pela quantidade de palavras </p>
+								<?php
+									show_qtde_order($_POST['lyric_music']);
+								?>
+							</div>
+						</div>
+					</div>
+					<br>
+					<a href="index.php"><button class="btn btn-dark btn-lg color"> Voltar </button></a>
 					<a style="left: 300px;" href="https://github.com/markryk" class="MarkRyk" target="_blank"> MarkRyk </a>
 				</div>
 			<div class="col-md-2"></div>
