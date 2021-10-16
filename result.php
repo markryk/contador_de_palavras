@@ -23,9 +23,10 @@
 							$arr = $_POST['lyric_music'];
 							$arr = trim($arr);
 							$arr = strtolower($arr);
-							$arr = preg_replace('/[^\p{L}\s]/u','',$arr);
-							$arr = preg_replace('/[\r\n]/u',' ',$arr); //Essa liha foi colocada depois
-							//$arr = preg_replace("~[\r\n]~", '',$arr);
+							$arr = preg_replace('/[\r\n]/',' ',$arr); //Com um pequeno bug, mas essa linha funciona
+							//$arr = preg_replace("~[\r\n]~", '',$arr); //
+							//var_dump($arr);
+							echo "<br>";
 							$arr = explode(" ", $arr);
 
 							echo "<p><strong> Música completa </strong></p>";
@@ -95,7 +96,7 @@
 								?>
 							</div>
 							<div class="col">
-								<p> Ordenado pela quantidade de palavras </p>
+								<p class="text"> Ordenado pela quantidade de palavras </p>
 								<?php
 									arsort($array_result);
 									foreach ($array_result as $arr => $soma){
