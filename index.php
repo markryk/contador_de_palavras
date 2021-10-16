@@ -26,6 +26,12 @@
 						<label for="musicname"> Nome da música </label>
 						<input class="form-control" type="text" name="music_name" id="musicname" required>
 						<br>
+						<label for="albumname"> Álbum </label>
+						<input class="form-control" type="text" name="album_name" id="albumname" required>
+						<br>
+						<label for="yearalbum"> Ano </label>
+						<input class="form-control" type="text" name="year_album" id="yearalbum" required>
+						<br>
 						<label for="lyricmusic"> Letra </label>
 						<textarea class="form-control" name="lyric_music" id="lyricmusic"></textarea>
 						<br>

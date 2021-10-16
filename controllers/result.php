@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">-->
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>-->
+
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
 	<title> Contador de palavras </title>
 	<meta charset="utf-8">
 </head>
@@ -20,50 +25,109 @@
 					<h1 class="display-4"> Contador de palavras </h1>
 					<?php
 						include_once "validate.php";
-						if (isset($_POST['band_name']) && isset($_POST['music_name']) && isset($_POST['lyric_music'])){
-							//var_dump(load_function($_POST['lyric_music']));
-							//load_function($_POST['lyric_music'])
+						if (isset($_POST['band_name']) && isset($_POST['music_name']) && isset($_POST['lyric_music'])):
 							
-							echo "<p><strong> Música completa </strong></p>";
-							complete_song($_POST['lyric_music']);
-							
-							echo "<br><br>";
-							echo "<p><strong> Qtde: </strong>".str_word_count($_POST['lyric_music'])." palavras no total</p>";
-
-							echo "<br><br>";
-
-							echo "<p><strong> Música completa sem repetição de palavras </strong></p>";
-							unique_words_in_song($_POST['lyric_music']);
-							
-							//echo "<br>";
-
-							count_words($_POST['lyric_music']);
-						}
+							echo "<p><strong> Banda: </strong>".$_POST['band_name']."</p>";
+							echo "<p><strong> Nome da música: </strong>".$_POST['music_name']."</p>";
+							echo "<p><strong> Álbum: </strong>".$_POST['album_name']."</p>";
+							echo "<p><strong> Ano: </strong>".$_POST['year_album']."</p>";
 					?>
+
+						<div class="row">
+							<div class="col">
+								<a data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="true" aria-controls="collapseExample1" class="btn btn_color shadow-sm with-chevron">
+						          <p class="text_qtde"> Música completa <i class="fa fa-angle-down"></i></p>
+						        </a>
+							</div>
+							<div class="col">
+								<?php echo "<p class='text_qtde'> Qtde de palavras no total: ".str_word_count($_POST['lyric_music'])."</p>"; ?>
+							</div>
+						</div>
+					    
+						<div id="collapseExample1" class="collapse">
+						   	<div class="card">
+						   		<div class="card-body card-body-no-border">
+						       		<?php complete_song($_POST['lyric_music']);	?>
+						        </div>
+						    </div>
+						</div>
+
+						<br><br>
+
+						<div class="row">
+							<div class="col">
+								<a data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="true" aria-controls="collapseExample2" class="btn btn_color shadow-sm with-chevron">
+						          <p class="text_qtde"> Palavras únicas da música <i class="fa fa-angle-down"></i></p>
+						        </a>
+							</div>
+							<div class="col">
+								<p class='text_qtde'> Qtde de palavras únicas: 
+									<?php echo count_words($_POST['lyric_music']); ?>
+								</p>
+							</div>
+						</div>
+					    
+						<div id="collapseExample2" class="collapse">
+						   	<div class="card">
+						   		<div class="card-body card-body-no-border">
+						       		<?php unique_words_in_song($_POST['lyric_music']); ?>
+						        </div>
+						    </div>
+						</div>
+
+					<?php endif; ?>
+
+					<br><br>
+					<p><strong> Ranking da frequência </strong></p>
 					<div class="container">
 						<div class="row">
 							<div class="col">
-								<p class="text"> Palavras na ordem da música </p>
-								<?php
-									show_music_order($_POST['lyric_music']);
-								?>
+						        <!-- Collapse Panel 3--><a data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="true" aria-controls="collapseExample3" class="btn btn_color shadow-sm with-chevron">
+						          <p class="text"> Na ordem da música <i class="fa fa-angle-down"></i></p>
+						        </a>
+						        <div id="collapseExample3" class="collapse">
+						        	<div class="card">
+						        		<div class="card-body">
+						              		<?php
+												show_music_order($_POST['lyric_music']);
+											?>
+						            	</div>
+						          	</div>
+						        </div>
 							</div>
 							<div class="col">
-								<p class="text"> Ordenado pelas palavras </p>
-								<?php
-									show_word_order($_POST['lyric_music']);
-								?>
+								<!-- Collapse Panel 4--><a data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="true" aria-controls="collapseExample4" class="btn btn_color shadow-sm with-chevron">
+							          <p class="text"> Ordem alfabética <i class="fa fa-angle-down"></i></p>
+							    </a>
+							    <div id="collapseExample4" class="collapse">
+							      	<div class="card">
+							       		<div class="card-body">
+							           		<?php
+												show_word_order($_POST['lyric_music']);
+											?>
+							           	</div>
+							         </div>
+							    </div>
 							</div>
 							<div class="col">
-								<p class="text"> Ordenado pela quantidade de palavras </p>
-								<?php
-									show_qtde_order($_POST['lyric_music']);
-								?>
+								<!-- Collapse Panel 5--><a data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="true" aria-controls="collapseExample5" class="btn btn_color shadow-sm with-chevron">
+							          <p class="text"> Qtde de palavras <i class="fa fa-angle-down"></i></p>
+							    </a>
+							    <div id="collapseExample5" class="collapse">
+							      	<div class="card">
+							       		<div class="card-body">
+							           		<?php
+												show_qtde_order($_POST['lyric_music']);
+											?>
+							           	</div>
+							         </div>
+							    </div>
 							</div>
 						</div>
 					</div>
-					<br>
-					<a href="index.php"><button class="btn btn-dark btn-lg color"> Voltar </button></a>
+					<br><br>
+					<a href="?op=insert"><button class="btn btn-outline-dark btn-lg"> Salvar no banco </button></a>
+					<a href="../index.php"><button class="btn btn-dark btn-lg color"> Voltar </button></a>
 					<a style="left: 300px;" href="https://github.com/markryk" class="MarkRyk" target="_blank"> MarkRyk </a>
 				</div>
 			<div class="col-md-2"></div>
