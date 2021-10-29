@@ -1,0 +1,202 @@
+<meta charset="utf-8">
+<?php
+	/**
+	*	@author: Anthony Jefferson;
+	*	@package: /view/list_common.php
+	*
+	* 	Este arquivo controla a criação e a visualização de dados em uma tabela. 
+	**/
+
+	//Testar se existe conteúdo!
+
+	//Se não existir, ele mostra a label 
+	if($table_content == false){
+		echo '<br><button class="btn btn-danger">';
+		echo ' <i class="fa fa-thumbs-down"></i>';
+		echo ' Não existem resultados';
+		echo '</button><br><br>';
+
+	//se existir conteúdo, ele cria a tabela
+	} else {
+?>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+
+			//função para guardar o id no filtro
+			function delete_reg(filter){
+				$('#value').val(filter);
+				$('#value_status').val(filter);
+			}
+		</script>
+
+		<style type="text/css">
+			.div_table {
+				overflow-x: auto;
+				overflow-y: auto;
+				/*margin: 50px;*/
+				width: auto;
+			}
+			td {
+				max-width: 130px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				border: 1px solid #cccccc;
+			}
+			.td_acoes {
+				max-width: 200px;
+			}
+		</style>
+
+
+		<!-- modal para excluir -->
+		<!-- Modal -->
+		<div class="modal fade" id="apagarCampo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!--<div class="modal fade" id="confirmaApagarCampo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="exampleModalLabel">Excluir cliente</h4>
+
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+
+		      <div class="modal-body">
+		        <h6>Esta operação não poderá ser desfeita. Tem certeza?</h6><br>
+		        <button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">
+		      		<span class="glyphicon glyphicon-remove-sign"></span>
+		      		Não, cancelar.
+		      	</button>
+		      	
+		      	<!--<a data-toggle="modal" href="#apagarCampo" class="btn btn-danger">-->
+	      		<form action="<?=$GLOBALS['project_index'].$delete_destiny;?>" method="POST">
+		        	<input type="hidden" name="action" value="delete"><!-- Depois mudar para type = hidden -->
+		      		<input type="hidden" name="filter" id="value"> <!-- Depois mudar para type = hidden -->
+		      		<!--<a data-toggle="modal" href="<?=$GLOBALS['project_index'].$delete_destiny;?>" class="btn btn-danger">-->
+		      		<button type="" class="btn btn-danger">
+		      			<span class="glyphicon glyphicon-ok-sign" data-target="#apagarCampo"></span>
+		      			Sim, Excluir.	
+		      		</a>
+		      	</form>
+	      		<br>		      	
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<!--<div class="modal fade" id="apagarCampo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title" id="exampleModalLabel">Senha de confirmação</h4>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form action="<?=$GLOBALS['project_index'].$delete_destiny;?>" method="POST">
+		        	<input type="hidden" name="action" value="delete">--><!-- Depois mudar para type = hidden -->
+		      		<!--<input type="hidden" name="filter" id="value">--> <!-- Depois mudar para type = hidden -->
+		      		<!--<br>
+		      		<label>Senha</label>
+		      		<input class="form-control" type="password" name="password" required><br>
+		      		<button type="button" class="btn btn-success" data-dismiss="modal" aria-label="Close">
+		      			<span class="glyphicon glyphicon-remove-sign"></span>
+		      			Cancelar
+		      		</button>
+		      		<button type="submit" class="btn btn-danger">
+		      			<span class="glyphicon glyphicon-ok-sign"></span>
+		      			Excluir
+		      		</button>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>-->
+
+		<div>
+			<table class="table table-sm table-hover table-striped" id="data_table">
+				<thead style="background-color: #D3E05A; color: black;" class="table text-center">
+					<?php
+						//Imprimindo os títulos
+						echo '<tr>';
+						foreach ($table_titles as $key => $value) {
+							echo '<th>',$value,'</th>';
+						}
+					?>
+					<th> Ações </th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<?php
+						foreach ($table_content as $key => $value) {
+							echo '<tr>';
+							foreach ($table_titles as $k => $v) {		
+								echo '<td>',$value[$k],'</td>';
+							}
+							
+							echo '<td class="td_acoes">';
+
+							if(isset($show) && $show == true){
+								echo '<a href="'.$show_destiny.'&filter='.($value[$filter]).'" title="Mostrar música" class="btn btn-info btn-xs">';
+									//echo '<i class='fas fa-envelope-open-text'></i>';
+									echo "<i class='fas fa-clipboard-list'></i>";
+								echo '</a>&nbsp;';
+							}
+
+							if(isset($score) && $score == true){
+								echo '<a href="'.$score_destiny.'&filter='.($value[$filter]).'" title="Pontuar cliente" class="btn btn-primary btn-xs">';
+									//echo '<i class='fas fa-user-check'></i>';
+									echo "<i class='fas fa-user-check'></i>";
+								echo '</a>&nbsp;';
+							}
+							
+							if(isset($update) && $update == true){
+								echo '<a href="'.$update_destiny.'&filter='.($value[$filter]).'" title="Editar cliente" class="btn btn-warning btn-xs">';
+								echo '<i class="fas fa-edit"></i>';
+								echo '</a>&nbsp;'; 
+							}
+
+							//if(@$value['id_user'] != @$user->id_user){
+								if(isset($delete) && $delete == true){
+									echo '<a href="#apagarCampo" class="btn btn-danger btn-xs" data-toggle="modal" id="tooltip" title="Excluir cliente" onclick="delete_reg(\'',$value[$filter],'\');">';
+									echo '<i class="fas fa-trash"></i>';
+									echo '</a> ';
+								}
+							//}
+
+							if(isset($print) && $print == true){
+								echo '<a href="/models/print.php?&filter='.base64_encode($value[$filter]).'" target="_BLANK" class="btn btn-primary btn-xs">';
+									echo '<i class="fa fa-print"></i>';
+								echo '</a>&nbsp;';
+							}
+
+							if(isset($block) && $block == true){
+								echo '<a href="/models/block.php?&filter='.base64_encode($value[$filter]).'" target="_BLANK" class="btn btn-warning btn-xs">';
+									echo '<i class="fa fa-ban"></i>';
+								echo '</a>&nbsp;';
+							}
+
+							//if(@$value['id_user'] != @$user->id_user){
+								if(isset($status) && $status == true){
+									echo '<a href="#alterarStatus" class="btn btn-warning btn-xs" data-toggle="modal" id="tooltip" title="Alterar status" onclick="delete_reg(\'',$value[$filter],'\');">';
+									echo '<i class="fas fa-user-slash"></i>';
+									echo '</a> ';
+								}
+							//}
+
+							echo '</td>';
+							echo '</tr>';
+						}
+					?>
+				</tbody>
+			</table>	
+		</div>
+<?php
+	}
+?>

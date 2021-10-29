@@ -44,7 +44,7 @@
 		}
 		//return $array_result;
 		//$array_result = arsort($array_result);
-		echo json_encode($array_result); //Ocultando json do array
+		return json_encode($array_result); //Ocultando json do array
 	}
 
 	function load_function($lyricmusic){
@@ -145,9 +145,7 @@
 								$soma += substr_count($u, $a);
 								$soma_total += $soma;
 							}
-
-						}
-						
+						}						
 					}
 					//echo $u." -> ".$soma;
 
@@ -184,14 +182,30 @@
 
 		case "insert":
 			$manager = new Manager();
-			if ($manager->insert_common("tb_songs", array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname'], "year_album"=>$_POST['yearalbum'], "total_words"=>$_POST['wordscount'], "total_unique_words"=>$_POST['countuniquewords'], "json_words_list"=>unique_words_json_list($_POST['lyricmusic'])))) echo "Dados inseridos com sucesso";
-			/*echo $_POST['bandname']."<br>";
-			echo $_POST['musicname']."<br>";
-			echo $_POST['albumname']."<br>";
-			echo $_POST['yearalbum']."<br>";
-			echo $_POST['wordscount']."<br>";
-			echo $_POST['countuniquewords']."<br>";
-			echo unique_words_json_list($_POST['lyricmusic'])."<br>";*/
+			$json_list = unique_words_json_list($_POST['lyricmusic']);
+			//echo $json_list;
+			if ($manager->select_common("tb_songs", NULL, array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname']))){
+				header("location: $project_index?op=founded_song&error=song_already_registered");
+			}
+			else {
+				$manager->insert_common("tb_songs", array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname'], "year_album"=>$_POST['yearalbum'], "total_words"=>$_POST['wordscount'], "total_unique_words"=>$_POST['countuniquewords'], "json_words_list"=>$json_list));
+				/*echo $_POST['bandname']."<br>";
+				echo $_POST['musicname']."<br>";
+				echo $_POST['albumname']."<br>";
+				echo $_POST['yearalbum']."<br>";
+				echo $_POST['wordscount']."<br>";
+				echo $_POST['countuniquewords']."<br>";
+				echo unique_words_json_list($_POST['lyricmusic'])."<br>";*/
+				header("location: $project_index?op=founded_song&error=song_inserted");
+			}
+			//include_once $GLOBALS['project_path']."index.php";
+		break;
+
+		case 'delete':
+			unset($_POST['action']);
+			$manager = new Manager();
+			$manager->delete_common("tb_songs", array("id_song"=>$_POST['filter']), NULL);
+			header("location: $project_index".$user->profile_page."?op=list&success=song_deleted");
 		break;
 	}
 ?>
