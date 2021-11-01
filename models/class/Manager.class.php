@@ -147,6 +147,98 @@
 
 		}//Fechando o método select_common
 
+		public function select_distinct($table, $additional_query, $fields, $filters, $query_extra=NULL){
+
+			//criando o objeto pdo...
+			$pdo = parent::get_instance();
+
+			//Iniciando a query
+			$query = "SELECT ";
+
+			if ($additional_query == "DISTINCT") $query .= " DISTINCT ";
+
+			# Se os campos array forem diferentes de NULL, ele pegará os campos. Caso contrário, o select assumirá o '*' (todos os campos);
+			/*if($fields != null){
+				//array("campo1", "campo2", ..., "campoN")
+				$query .= implode(", ", $fields);
+			}elseif ($fields == "COUNT") {
+				$query .= "COUNT (*)";
+			}else{
+				$query .= "*";
+			}*/
+			if ($fields == null){
+				$query .= "*";
+			} else if ($fields == "COUNT") {
+				$query .= "COUNT(*)";
+			} else {
+				$query .= implode(", ", $fields);
+			}
+
+			//Continuando a query
+			$query .= " FROM $table";
+
+			# Para os filtros: Se existirem filtros, eles serão os valores do array. Caso eles forem diferentes de NULL, ele pegará esses valores. 
+			if($filters != null){
+				$query .= " WHERE ";
+				foreach ($filters as $key => $value) {
+					$query .= "$key=:$key AND ";
+				}
+
+				//Removendo o ultimo AND da query
+				$query = substr($query, 0, -4);
+			}
+
+			//se a consulta precisar de algo mais..
+			if($query_extra != NULL){
+				//if ($filters == NULL) $query .= " WHERE ";				
+				$query .= $query_extra;
+			}
+
+			# apenas para testar a query (descomente o echo) - PADRÃO- COMENTADO
+			/*echo $query;
+			echo "<br>";*/
+
+			# preparando consulta
+			$statement = $pdo->prepare($query);
+
+			# Caso o pdo não prepare a query, ele mostrará os erros
+			if(!$statement) {
+			    echo "\PDO::errorInfo():\n";
+			    print_r($dbh->errorInfo());
+			}
+
+			//substituindo os parametros pelos reais valores dos filtros, caso haja...
+			if($filters != null){
+
+				//filtrando valores para serem inseridos, tecnica segura para evitar SQL Injection...
+				foreach ($filters as $key => $value) {
+					$filters[$key] = filter_var($value);
+				}
+
+				//substituindo os parametros nomeados pelos verdadeiros valores, ex: ":name" por "Anthony"
+				foreach ($filters as $key => $value) {
+					$statement->bindValue(":$key", $value, PDO::PARAM_STR);
+				}
+			}//fechando o if (teste de filtros)
+
+			# executando consulta
+			$statement->execute();
+
+			# preparando resultado
+			$data;
+			if($statement->rowCount()){
+				while($result = $statement->fetch(PDO::FETCH_ASSOC)){
+					$data[] = $result;
+				}
+			}else{
+				return false;
+			}
+
+			# retornando resultado da busca
+			return $data;
+
+		}//Fechando o método select_common
+
 		# Metódo de SELEÇÃO RELACIONADA, com relacionamentos e chaves estrangeiras...
 		public function select_special($tables, $relationships, $filters, $query_extra=NULL){
 

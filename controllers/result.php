@@ -185,7 +185,9 @@
 			$json_list = unique_words_json_list($_POST['lyricmusic']);
 			//echo $json_list;
 			if ($manager->select_common("tb_songs", NULL, array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname']))){
-				header("location: $project_index?op=founded_song&error=song_already_registered");
+				//$id = $manager->select_common("tb_songs")
+				//header("location: $project_index?op=founded_song&error=song_already_registered");
+				header("location: $project_index?op=list&error=song_already_registered");
 			}
 			else {
 				$manager->insert_common("tb_songs", array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname'], "year_album"=>$_POST['yearalbum'], "total_words"=>$_POST['wordscount'], "total_unique_words"=>$_POST['countuniquewords'], "json_words_list"=>$json_list));
@@ -196,7 +198,8 @@
 				echo $_POST['wordscount']."<br>";
 				echo $_POST['countuniquewords']."<br>";
 				echo unique_words_json_list($_POST['lyricmusic'])."<br>";*/
-				header("location: $project_index?op=founded_song&error=song_inserted");
+				//header("location: $project_index?op=founded_song&error=song_inserted");
+				header("location: $project_index?op=list&success=song_inserted");
 			}
 			//include_once $GLOBALS['project_path']."index.php";
 		break;
