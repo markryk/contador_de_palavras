@@ -70,9 +70,13 @@
 					//include_once $GLOBALS['project_path']."result.php?op=count";
 				break;
 				case 'stats':
+					include_once $GLOBALS['project_path']."models/class/ConnectPDO.php";
 					$manager = new Manager();
-					$bandname = $manager->select_distinct("tb_songs", "DISTINCT", array("band_name"), NULL);
-					$songname = $manager->select_common("tb_songs", NULL, array("song_name"), " ORDER BY total_words DESC");
+					
+	                //$pdo = Connect_em_PDO();
+
+	                $bandname = $manager->select_distinct("tb_songs", "DISTINCT", array("band_name"), NULL);					
+					$songname = $manager->select_common("tb_songs", NULL, array("song_name"), " ORDER BY total_words DESC LIMIT 4");
 					include_once $GLOBALS['project_path']."views/stats.html";
 				break;
 				/*default:

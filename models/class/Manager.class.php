@@ -340,6 +340,90 @@
 
 		}//fechar o método SELECT SPECIAL
 
+		public function select_special_distinct($tables, $relationships, $filters, $query_extra=NULL){
+
+			$pdo = parent::get_instance(); //criando o objeto pdo...
+
+			$query = "SELECT ";
+
+			foreach ($tables as $table=>$fields){
+				if(!empty($fields)){
+					foreach ($fields as $each_field){
+						$query .= "$table.$each_field, ";
+					}
+				} else {
+					$query .= "$table.*, "; //quando as colunas nao forem informadas
+				}
+			}
+			
+			$query = substr($query, 0, -2); //removendo ultima ","
+			
+			$tables_names = array_keys($tables); //inner join's
+
+			# Continuando a query, e informando com o INNER JOIN as tabelas a serem relacionadas
+			$query .= " FROM ".implode(" INNER JOIN ", $tables_names);
+			
+			# Colocando os relacionamentos na query
+			$query .= " ON ";
+			foreach($relationships as $foreign=>$primary){
+				$query .= "$foreign=$primary AND "; 
+			}
+
+			$query = substr($query, 0, -4); //removendo ultimo "AND" dos RELACIONAMENTOS
+
+			# Setando os filtros na query
+			if(isset($filters)){
+				$query .= " WHERE ";
+				foreach($filters as $field=>$value){
+					$query .= "$field=? AND ";
+				}
+				$query = substr($query, 0, -4); //removendo ultimo "AND"...
+			}
+
+			//se a consulta precisar de algo mais..
+			if($query_extra != ""){
+				$query .= $query_extra;
+			}
+
+			#apenas para testar a query (descomente o echo) - por padrão mantém comentado
+			//echo $query;
+
+			$statement = $pdo->prepare($query); //preparando consulta
+
+			# Caso o pdo não prepare a query, ele mostrará os erros
+			if(!$statement) {
+			    echo "\PDO::errorInfo():\n";
+			    print_r($dbh->errorInfo());
+			}
+
+
+			# Se os filtros estiverem setados
+			if(isset($filters)){
+				//filtrando valores para serem inseridos, tecnica segura para evitar SQL Injection...
+				foreach ($filters as $key => $value) $filters[$key] = filter_var($value);
+
+				//substituindo os parametros nomeados pelos verdadeiros valores, ex: "?" por "Anthony", com a ajuda da variável auxiliar
+				$i = 1;
+				foreach ($filters as $key => $value){
+					//$parameters[":$key"] = $value;
+					$statement->bindValue($i, $value, PDO::PARAM_STR);
+					$i++;
+				}
+			}
+
+			$statement->execute(); # executando consulta
+
+			# preparando o resultado
+			$data;
+			if ($statement->rowCount()){
+				while($result = $statement->fetch(PDO::FETCH_ASSOC)){
+					$data[] = $result;
+				}
+			} else return false;
+
+			return $data; # retornando resultado da busca
+		}
+
 		//Metódo de atualização modo normal, apenas uma tabela...
 		public function update_common($table, $data, $filters, $query_extra=null){
 

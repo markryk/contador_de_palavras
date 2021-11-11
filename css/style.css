@@ -16,7 +16,7 @@ label {
 p {
 	font-family: Roboto;
 	font-size: 20pt;
-	font-weight: 500;
+	/*font-weight: 500;*/
 }
 p.text_qtde{
 	font-size: 15pt;
