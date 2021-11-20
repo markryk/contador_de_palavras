@@ -19,14 +19,25 @@
 					$manager = new Manager();
 					echo "<h1> Músicas </h1>";
 
-					$table_content = $manager->select_common("tb_songs", NULL, NULL, " ORDER BY band_name");
+					$tables['tb_songs'] = array();
+					$tables['tb_bands'] = array();
+					$tables['tb_albums'] = array();
+					
+					$rel['tb_songs.song_album_id'] = "tb_albums.id_album";
+					$rel['tb_albums.album_band_id'] = "tb_bands.id_band";
+					//$rel['tb_songs.song_band_id'] = "tb_bands.id_band";
 
-					$table_titles['band_name'] = "Cantor/banda";
-					$table_titles['music_name'] = "Música";
-					$table_titles['album_name'] = "Álbum";
-					$table_titles['year_album'] = "Ano";
-					$table_titles['total_words'] = "Qtde palavras";
-					$table_titles['total_unique_words'] = "Qtde palavras únicas";
+					//$table_content = $manager->select_common("tb_songs", NULL, NULL, " ORDER BY band_name");
+					$table_content = $manager->select_special($tables, $rel, NULL);
+
+					if ($table_content){
+						$table_titles['band_name'] = "Cantor/banda";
+						$table_titles['song_name'] = "Música";
+						$table_titles['album_name'] = "Álbum";
+						$table_titles['album_year'] = "Ano";
+						$table_titles['song_total_words'] = "Qtde palavras";
+						$table_titles['song_unique_words'] = "Qtde palavras únicas";
+					}
 
 					$show = true;
 					$delete = true;
@@ -44,14 +55,24 @@
 					$manager = new Manager();
 					echo "<h1> Músicas </h1>";
 
-					$table_content = $manager->select_common("tb_songs", NULL, array(""), " ORDER BY band_name");
+					$tables['tb_songs'] = array();
+					$tables['tb_bands'] = array();
+					$tables['tb_albums'] = array();
+					
+					$rel['tb_songs.song_album_id'] = "tb_albums.id_album";
+					$rel['tb_albums.album_band_id'] = "tb_bands.id_band";
 
-					$table_titles['band_name'] = "Cantor/banda";
-					$table_titles['music_name'] = "Música";
-					$table_titles['album_name'] = "Álbum";
-					$table_titles['year_album'] = "Ano";
-					$table_titles['total_words'] = "Qtde palavras";
-					$table_titles['total_unique_words'] = "Qtde palavras únicas";
+					//$table_content = $manager->select_common("tb_songs", NULL, NULL, " ORDER BY band_name");
+					$table_content = $manager->select_special($tables, $rel, array("id_song"=>$_GET['filter']));
+
+					if ($table_content){
+						$table_titles['band_name'] = "Cantor/banda";
+						$table_titles['song_name'] = "Música";
+						$table_titles['album_name'] = "Álbum";
+						$table_titles['album_year'] = "Ano";
+						$table_titles['song_total_words'] = "Qtde palavras";
+						$table_titles['song_unique_words'] = "Qtde palavras únicas";
+					}
 
 					$show = true;
 					$delete = true;
@@ -62,6 +83,8 @@
 					$filter = "id_song";
 
 					include_once $GLOBALS['project_path']."views/list_common.html";
+
+					echo "<a href='?op=register' class='btn btn-dark color'> Inserir música </a> &nbsp; <a href='?op=stats' class='btn btn-dark color'> Estatísticas </a>";
 				break;
 				case 'show_song':
 					$manager = new Manager();

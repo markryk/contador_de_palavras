@@ -2,6 +2,9 @@
 	include_once dirname(__DIR__) ."/models/config.php";
 	include_once $project_path."/models/class/Connect.class.php";
 	include_once $project_path."/models/class/Manager.class.php";
+	include_once $project_path."/controllers/insere_dados.php";
+
+	date_default_timezone_set("America/Fortaleza");
 
 	/*function show_qtde_order($lyricmusic){
 		$array_result = unique_words_list($lyricmusic);
@@ -65,16 +68,16 @@
 		case "count": //Aqui será pontuado o cliente
 			unset($_POST['action']);
 			//$manager = new Manager();
-			load_function($_POST['lyric_music']);
+			//load_function($_POST['lyric_music']);
 
 			function complete_song($lyricmusic){
-				//Essa função pega o texto (formatado pela função anterior) e coloca em um array
+				//Essa função pega o texto (formatado pela função load_function) e coloca em um array
 				$arr = load_function($lyricmusic);
 				$count = 0;
 				foreach ($arr as $a) {
 					if ($a != '') {
 						echo $a.", ";
-						$count++;
+						$count++; //conta cada palavra
 					}
 				}
 				echo "<br><br>";
@@ -82,14 +85,14 @@
 			}
 
 			function unique_words_in_song($lyricmusic){
-				//Essa função pega o texto (formatado pela função anterior) e coloca somente as palavras que não se repetem em um array
+				//Essa função pega o texto (formatado pela função load_function) e exibe somente as palavras que não se repetem, em um array
 				$arr = load_function($lyricmusic);
 				$arr_unq = array_unique($arr);
 				$count = 0;
 				foreach ($arr_unq as $u) {
 					if ($u != '') {
 						echo $u.", ";
-						$count++;
+						$count++; //conta cada palavra
 					}
 				}
 				echo "<br><br>";
@@ -156,6 +159,7 @@
 			}
 
 			function show_music_order($lyricmusic){
+				//Essa função mostra a frequência das palavras pela ordem em q aparecem na música
 				$array_result = unique_words_list($lyricmusic);
 				foreach ($array_result as $arr => $soma){
 					echo $arr." -> ".$soma."<br>";
@@ -163,6 +167,7 @@
 			}
 
 			function show_word_order($lyricmusic){
+				//Essa função mostra a frequência das palavras pela ordem alfabética
 				$array_result = unique_words_list($lyricmusic);
 				ksort($array_result);
 				foreach ($array_result as $arr => $soma){
@@ -171,6 +176,7 @@
 			}
 
 			function show_qtde_order($lyricmusic){
+				//Essa função mostra a frequência das palavras pela ordem (decrescente) da frequencia
 				$array_result = unique_words_list($lyricmusic);
 				arsort($array_result);
 				foreach ($array_result as $arr => $soma){
@@ -182,26 +188,44 @@
 
 		case "insert":
 			$manager = new Manager();
-			$json_list = unique_words_json_list($_POST['lyricmusic']);
-			//echo $json_list;
-			if ($manager->select_common("tb_songs", NULL, array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname']))){
-				//$id = $manager->select_common("tb_songs")
-				//header("location: $project_index?op=founded_song&error=song_already_registered");
-				header("location: $project_index?op=list&error=song_already_registered");
+			$nome_da_banda = $_POST['bandname'];
+			$nome_do_album = $_POST['albumname'];
+			$nome_da_musica = $_POST['musicname'];
+			//echo $nome_do_album;
+
+			$band = $manager->select_common("tb_bands", NULL, array("band_name"=>$nome_da_banda));
+
+			if ($band){
+				//var_dump($band);
+				$band_id = $band[0]['id_band'];
+				$album = $manager->select_common("tb_albums", NULL, array("album_band_id"=>$band_id, "album_name"=>$nome_do_album));
+				if ($album){
+					//var_dump($album);
+					$album_id = $album[0]['id_album'];
+					$song = $manager->select_common("tb_songs", NULL, array("song_album_id"=>$album_id, "song_name"=>$nome_da_musica));
+					if ($song){
+						//var_dump($song);
+						//echo "Já existe essa música, portanto não será cadastrada";
+						$filtr = $song[0]['id_song'];
+						header("location: $project_index?op=founded_song&filter=$filtr&error=song_already_registered");
+					} else {
+						$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+						header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
+						//header("location: $project_index?op=founded_song&filter=$filter&success=song_inserted");
+						//echo "<br> Inserindo pela música";
+					}
+				} else {
+					//echo "<br>";
+					//echo $album[0]['album_name'];
+					$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+					header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
+					//echo "<br> Inserindo pelo álbum";
+				}
+			} else {
+				$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+				header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
+				//echo "<br> Inserindo pela banda";
 			}
-			else {
-				$manager->insert_common("tb_songs", array("band_name"=>$_POST['bandname'], "music_name"=>$_POST['musicname'], "album_name"=>$_POST['albumname'], "year_album"=>$_POST['yearalbum'], "total_words"=>$_POST['wordscount'], "total_unique_words"=>$_POST['countuniquewords'], "json_words_list"=>$json_list));
-				/*echo $_POST['bandname']."<br>";
-				echo $_POST['musicname']."<br>";
-				echo $_POST['albumname']."<br>";
-				echo $_POST['yearalbum']."<br>";
-				echo $_POST['wordscount']."<br>";
-				echo $_POST['countuniquewords']."<br>";
-				echo unique_words_json_list($_POST['lyricmusic'])."<br>";*/
-				//header("location: $project_index?op=founded_song&error=song_inserted");
-				header("location: $project_index?op=list&success=song_inserted");
-			}
-			//include_once $GLOBALS['project_path']."index.php";
 		break;
 
 		case 'delete':

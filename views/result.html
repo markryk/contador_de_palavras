@@ -26,6 +26,7 @@
 					<form action="<?=$GLOBALS['project_index'];?>controllers/result.php" method="POST">
 						<input type="hidden" value="insert" name="action">
 
+						<!--Isso é o q serão enviados para result.php (insert)-->
 						<input type="hidden" name="bandname" value="<?=$_POST['band_name'];?>">
 						<input type="hidden" name="musicname" value="<?=$_POST['music_name'];?>">
 						<input type="hidden" name="albumname" value="<?=$_POST['album_name'];?>">
@@ -94,29 +95,25 @@
 						<div class="container">
 							<div class="row">
 								<div class="col">
-							        <!-- Collapse Panel 3--><a data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="true" aria-controls="collapseExample3" class="btn btn_color shadow-sm with-chevron">
+							        <a data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="true" aria-controls="collapseExample3" class="btn btn_color shadow-sm with-chevron">
 							          <p class="text"> Ordem da música <i class="fa fa-angle-down"></i></p>
 							        </a>
 							        <div id="collapseExample3" class="collapse">
 							        	<div class="card">
 							        		<div class="card-body">
-							              		<?php
-													show_music_order($_POST['lyric_music']);
-												?>
+							              		<?php show_music_order($_POST['lyric_music']); ?>
 							            	</div>
 							          	</div>
 							        </div>
 								</div>
 								<div class="col">
-									<!-- Collapse Panel 4--><a data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="true" aria-controls="collapseExample4" class="btn btn_color shadow-sm with-chevron">
-								          <p class="text"> Ordem alfabética <i class="fa fa-angle-down"></i></p>
+									<a data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="true" aria-controls="collapseExample4" class="btn btn_color shadow-sm with-chevron">
+								    	<p class="text"> Ordem alfabética <i class="fa fa-angle-down"></i></p>
 								    </a>
 								    <div id="collapseExample4" class="collapse">
 								      	<div class="card">
 								       		<div class="card-body">
-								           		<?php
-													show_word_order($_POST['lyric_music']);
-												?>
+								           		<?php show_word_order($_POST['lyric_music']); ?>
 								           	</div>
 								         </div>
 								    </div>
@@ -128,9 +125,7 @@
 								    <div id="collapseExample5" class="collapse">
 								      	<div class="card">
 								       		<div class="card-body">
-								           		<?php
-													show_qtde_order($_POST['lyric_music']);
-												?>
+								           		<?php show_qtde_order($_POST['lyric_music']); ?>
 								           	</div>
 								         </div>
 								    </div>
