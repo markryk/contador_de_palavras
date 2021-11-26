@@ -55,7 +55,7 @@
 		$arr = $lyricmusic;
 		$arr = trim($arr);
 		$arr = strtolower($arr);
-		$arr = preg_replace('/[\r\n]/',' ',$arr); //Com um pequeno bug, mas essa linha funciona
+		$arr = preg_replace('/[\r\n\W]/',' ',$arr); //Com um pequeno bug, mas essa linha funciona
 		//$arr = preg_replace("~[\r\n]~", '',$arr); //
 		//var_dump($arr);
 		//echo "<br>";
@@ -70,33 +70,33 @@
 			//$manager = new Manager();
 			//load_function($_POST['lyric_music']);
 
-			function complete_song($lyricmusic){
+			function complete_song($lyricmusic, $show_text){
 				//Essa função pega o texto (formatado pela função load_function) e coloca em um array
 				$arr = load_function($lyricmusic);
 				$count = 0;
 				foreach ($arr as $a) {
 					if ($a != '') {
-						echo $a.", ";
+						if ($show_text) echo $a.", ";
 						$count++; //conta cada palavra
 					}
 				}
-				echo "<br><br>";
-				echo "<p><strong> Total: </strong>".$count." </p>";
+				if ($show_text) echo "<br><br><p><strong> Total: </strong>".$count." </p>";
+				else return $count;
 			}
 
-			function unique_words_in_song($lyricmusic){
+			function unique_words_in_song($lyricmusic, $show_text){
 				//Essa função pega o texto (formatado pela função load_function) e exibe somente as palavras que não se repetem, em um array
 				$arr = load_function($lyricmusic);
 				$arr_unq = array_unique($arr);
 				$count = 0;
 				foreach ($arr_unq as $u) {
 					if ($u != '') {
-						echo $u.", ";
+						if ($show_text) echo $u.", "; //
 						$count++; //conta cada palavra
 					}
 				}
-				echo "<br><br>";
-				echo "<p><strong> Total: </strong>".$count." </p>";
+				if ($show_text) echo "<br><br><p><strong> Total: </strong>".$count." </p>";
+				else return $count;
 			}
 
 			function unique_words_list($lyricmusic){
@@ -132,7 +132,7 @@
 				return $array_result;
 			}
 
-			function count_words($lyricmusic){
+			/*function count_words($lyricmusic){
 				$arr = load_function($lyricmusic);
 				$arr_unq = array_unique($arr);
 				$array_result = array();
@@ -156,7 +156,7 @@
 					$array_result += $array_cont;
 				}
 				return count($array_result);
-			}
+			}*/
 
 			function show_music_order($lyricmusic){
 				//Essa função mostra a frequência das palavras pela ordem em q aparecem na música

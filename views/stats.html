@@ -19,8 +19,9 @@
   	<p class="font-italic text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>-->
   
   	<div class="row pb-5 mb-4">
-  		<?php 
-        foreach($bandname as $b_n):
+  		<?php
+  			if (!$bandname) echo "Não existem resultados";
+  			else foreach($bandname as $b_n):
       ?>
     		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
 
@@ -34,9 +35,13 @@
                   $bn = $b_n['band_name'];
                   //$stmt = $conn->prepare("SELECT DISTINCT tb_songs.band_name, counter.count FROM tb_songs LEFT JOIN (SELECT band_name, COUNT(band_name) AS count FROM tb_songs) counter ON counter.band_name = tb_songs.band_name WHERE tb_songs.band_name = $bn ORDER BY counter.count DESC");
 
-                  $result = $manager->select_common("tb_songs", array("music_name"), array("band_name"=>$bn));
+                  //$result = $manager->select_common("tb_songs", array("song_name"), array("band_name"=>$bn));
 
-                  $count = $manager->select_common("tb_songs", "COUNT", array("band_name"=>$bn));
+                  $result = $manager->select_special($tables, $rel, array("band_name"=>$bn));
+
+                  //$count = $manager->select_common("tb_songs", "COUNT", array("band_name"=>$bn));
+
+                  $count = $manager->select_special($tables, $rel, array("id_song"=>$_GET['filter']));
 
                   foreach ($count[0] as $c) {
                     echo $c;
@@ -56,7 +61,10 @@
 	<p class="lead"> Músicas </p>
 
   	<div class="row pb-5 mb-4">
-  		<?php foreach($songname as $s_n): ?>
+  		<?php 
+  			if (!$songname) echo "Não existem resultados";
+  			else foreach($songname as $s_n):
+  		?>
     		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
 
       			<!-- Card-->

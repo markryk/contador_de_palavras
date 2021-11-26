@@ -3,7 +3,7 @@
 		
 		$manager = new Manager();
 		$json_list = unique_words_json_list($_POST['lyricmusic']);
-		$manager->insert_common("tb_bands", array("band_name"=>$bandname, "band_created_in"=>date("Y-m-d H:i:s")));
+		$manager->insert_common("tb_bands", array("band_name"=>$bandname, "band_genre"=>$_POST['bandgenre'], "band_created_in"=>date("Y-m-d H:i:s")));
 
 		$band = $manager->select_common("tb_bands", NULL, array("band_name"=>$bandname));
 		$band_id = $band[0]['id_band'];
@@ -13,7 +13,7 @@
 		$album = $manager->select_common("tb_albums", NULL, array("album_band_id"=>$band_id, "album_name"=>$albumname));
 		$album_id = $album[0]['id_album'];
 
-		$manager->insert_common("tb_songs", array("song_name"=>$_POST['musicname'], "song_total_words"=>$_POST['wordscount'], "song_unique_words"=>$_POST['countuniquewords'], "song_words_list"=>$json_list, "song_album_id"=>$album_id, "song_created_in"=>date("Y-m-d H:i:s")));
+		$manager->insert_common("tb_songs", array("song_name"=>$_POST['musicname'], "song_total_words"=>$_POST['wordscount'], "song_unique_words"=>$_POST['countuniquewords'], "song_words_list"=>$json_list, "song_album_id"=>$album_id, "song_lang"=>$_POST['songlang'], "song_created_in"=>date("Y-m-d H:i:s"), "song_band_id"=>$band_id));
 
 		$song = $manager->select_common("tb_songs", NULL, array("song_album_id"=>$album_id, "song_name"=>$musicname));
 		$filter = $song[0]['id_song'];

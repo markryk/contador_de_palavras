@@ -27,6 +27,8 @@
 						<input type="hidden" value="insert" name="action">
 
 						<!--Isso é o q serão enviados para result.php (insert)-->
+						<input type="hidden" name="bandgenre" value="<?=$_POST['band_genre'];?>">
+						<input type="hidden" name="songlang" value="<?=$_POST['song_lang'];?>">
 						<input type="hidden" name="bandname" value="<?=$_POST['band_name'];?>">
 						<input type="hidden" name="musicname" value="<?=$_POST['music_name'];?>">
 						<input type="hidden" name="albumname" value="<?=$_POST['album_name'];?>">
@@ -37,6 +39,9 @@
 							include_once "validate.php";
 							if (isset($_POST['band_name']) && isset($_POST['music_name']) && isset($_POST['lyric_music'])):
 								
+								echo "<p><strong> Gênero: </strong>".$_POST['band_genre']."</p>";
+								echo "<p><strong> Idioma: </strong>".$_POST['song_lang']."</p>";
+								echo "<br>";
 								echo "<p><strong> Banda: </strong>".$_POST['band_name']."</p>";
 								echo "<p><strong> Nome da música: </strong>".$_POST['music_name']."</p>";
 								echo "<p><strong> Álbum: </strong>".$_POST['album_name']."</p>";
@@ -50,15 +55,15 @@
 							        </a>
 								</div>
 								<div class="col">
-									<?php echo "<p class='text_qtde'> Qtde de palavras no total: ".str_word_count($_POST['lyric_music'])."</p>"; ?>
-									<input type="hidden" name="wordscount" value="<?=str_word_count($_POST['lyric_music']);?>">
+									<?php echo "<p class='text_qtde'> Qtde de palavras no total: ".complete_song($_POST['lyric_music'], false)."</p>"; ?>
+									<input type="hidden" name="wordscount" value="<?=complete_song($_POST['lyric_music'], false);?>">
 								</div>
 							</div>
 						    
 							<div id="collapseExample1" class="collapse">
 							   	<div class="card">
 							   		<div class="card-body card-body-no-border">
-							       		<?php complete_song($_POST['lyric_music']);	?>
+							       		<?php complete_song($_POST['lyric_music'], true); ?>
 							        </div>
 							    </div>
 							</div>
@@ -73,16 +78,16 @@
 								</div>
 								<div class="col">
 									<p class='text_qtde'> Qtde de palavras únicas: 
-										<?php echo count_words($_POST['lyric_music']); ?>
+										<?php echo unique_words_in_song($_POST['lyric_music'], false); ?>
 									</p>
-									<input type="hidden" name="countuniquewords" value="<?=count_words($_POST['lyric_music']);?>">
+									<input type="hidden" name="countuniquewords" value="<?=unique_words_in_song($_POST['lyric_music'], false);?>">
 								</div>
 							</div>
 						    
 							<div id="collapseExample2" class="collapse">
 							   	<div class="card">
 							   		<div class="card-body card-body-no-border">
-							       		<?php unique_words_in_song($_POST['lyric_music']); ?>
+							       		<?php echo unique_words_in_song($_POST['lyric_music'], true); ?>
 							        </div>
 							    </div>
 							</div>

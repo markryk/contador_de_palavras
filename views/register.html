@@ -4,14 +4,30 @@
 <form action="<?=$GLOBALS['project_index'];?>controllers/result.php" method="POST">
 	<input type="hidden" value="count" name="action">
 
+	<label for="bandgenre"> Gênero Musical </label>
+	<select id="bandgenre" name="band_genre" class="custom-select">
+		<option value="Rock Internacional"> Rock Internacional </option>
+		<option value="Rock Nacional"> Rock Nacional </option>
+		<option value="Pop Internacional"> Pop Internacional </option>
+		<option value="Pop Nacional"> Pop Nacional </option>
+	</select>
+	<br><br>
+	<label for="songlang"> Idioma </label>
+	<select id="songlang" name="song_lang" class="custom-select">
+		<option value="Inglês"> Inglês </option>
+		<option value="Português"> Português </option>
+		<option value="Espanhol"> Espanhol </option>
+		<option value="Italiano"> Italiano </option>
+	</select>
+	<br><br>
 	<label for="bandname"> Banda/Cantor </label>
 	<input class="form-control" type="text" name="band_name" id="bandname" required>
 	<br>
-	<label for="musicname"> Nome da música </label>
-	<input class="form-control" type="text" name="music_name" id="musicname" required>
-	<br>
 	<label for="albumname"> Álbum </label>
 	<input class="form-control" type="text" name="album_name" id="albumname" required>
+	<br>
+	<label for="musicname"> Nome da música </label>
+	<input class="form-control" type="text" name="music_name" id="musicname" required>
 	<br>
 	<label for="yearalbum"> Ano </label>
 	<input class="form-control" type="text" name="year_album" id="yearalbum" required>
