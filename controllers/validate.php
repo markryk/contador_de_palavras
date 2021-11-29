@@ -120,6 +120,7 @@
 					
 					$rel['tb_songs.song_album_id'] = "tb_albums.id_album";
 					$rel['tb_albums.album_band_id'] = "tb_bands.id_band";
+					$rel['tb_songs.song_album_id'] = "tb_bands.id_band";
 
 	                //$pdo = Connect_em_PDO();
 

@@ -205,26 +205,22 @@
 					$song = $manager->select_common("tb_songs", NULL, array("song_album_id"=>$album_id, "song_name"=>$nome_da_musica));
 					if ($song){
 						//var_dump($song);
-						//echo "Já existe essa música, portanto não será cadastrada";
 						$filtr = $song[0]['id_song'];
 						header("location: $project_index?op=founded_song&filter=$filtr&error=song_already_registered");
 					} else {
-						$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+						$filtr = insereMusica($band_id, $album_id, $nome_da_musica);
+
 						header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
-						//header("location: $project_index?op=founded_song&filter=$filter&success=song_inserted");
-						//echo "<br> Inserindo pela música";
 					}
 				} else {
-					//echo "<br>";
-					//echo $album[0]['album_name'];
-					$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+					$filtr = insereAlbumMusica($band_id, $nome_do_album, $nome_da_musica);
+
 					header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
-					//echo "<br> Inserindo pelo álbum";
 				}
 			} else {
-				$filtr = insereDados($nome_da_banda, $nome_do_album, $nome_da_musica);
+				$filtr = insereBandaAlbumMusica($nome_da_banda, $nome_do_album, $nome_da_musica);
+
 				header("location: $project_index?op=founded_song&filter=$filtr&success=song_inserted");
-				//echo "<br> Inserindo pela banda";
 			}
 		break;
 

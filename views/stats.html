@@ -35,18 +35,22 @@
                   $bn = $b_n['band_name'];
                   //$stmt = $conn->prepare("SELECT DISTINCT tb_songs.band_name, counter.count FROM tb_songs LEFT JOIN (SELECT band_name, COUNT(band_name) AS count FROM tb_songs) counter ON counter.band_name = tb_songs.band_name WHERE tb_songs.band_name = $bn ORDER BY counter.count DESC");
 
+                  //echo $bn;
+
                   //$result = $manager->select_common("tb_songs", array("song_name"), array("band_name"=>$bn));
 
-                  $result = $manager->select_special($tables, $rel, array("band_name"=>$bn));
+                  //$result = $manager->select_special($tables, $rel, array("band_name"=>$bn));
 
-                  //$count = $manager->select_common("tb_songs", "COUNT", array("band_name"=>$bn));
+                  $count = $manager->select_common("tb_songs", "COUNT", array("song_band_id"=>$bn));
 
-                  $count = $manager->select_special($tables, $rel, array("id_song"=>$_GET['filter']));
+                  var_dump($count);
+
+                  //$count = $manager->select_special($tables, $rel, array("band_name"=>$bn));
 
                   foreach ($count[0] as $c) {
                     echo $c;
                     echo "<br><br>";
-                    for ($i=0; $i<$c; $i++) foreach ($result[$i] as $res) echo $res.", <br>";
+                    //for ($i=0; $i<$c; $i++) foreach ($result[$i] as $res) echo $res.", <br>";
                   }
                 ?>
               </p>
