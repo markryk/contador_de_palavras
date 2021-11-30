@@ -106,6 +106,8 @@
 					$song = $manager->select_special($tables, $rel, array("id_song"=>$_GET['filter']));
 
 					include_once $GLOBALS['project_path']."views/show_song.html";
+
+
 					//include_once $GLOBALS['project_path']."result.php?op=count";
 				break;
 				case 'stats':
@@ -114,19 +116,35 @@
 
 					$song = $manager->select_common("tb_songs", NULL, array("band_name"));
 
-					$tables['tb_songs'] = array();
+					/*$tables['tb_songs'] = array();
 					$tables['tb_bands'] = array();
 					$tables['tb_albums'] = array();
 					
 					$rel['tb_songs.song_album_id'] = "tb_albums.id_album";
 					$rel['tb_albums.album_band_id'] = "tb_bands.id_band";
-					$rel['tb_songs.song_album_id'] = "tb_bands.id_band";
+					$rel['tb_songs.song_band_id'] = "tb_bands.id_band";*/
 
 	                //$pdo = Connect_em_PDO();
 
-	                $bandname = $manager->select_distinct("tb_bands", "DISTINCT", array("band_name"), NULL);					
-					//$songname = $manager->select_common("tb_songs", NULL, array("song_name"), " ORDER BY total_words DESC LIMIT 4");
+	                //$bandname = $manager->select_distinct("tb_bands", "DISTINCT", array("band_name"), NULL);
+	                $bandname = $manager->select_common("tb_bands", NULL, NULL, NULL);
+
+	                $tables['tb_bands'] = array();
+	                $tables['tb_songs'] = array();
+	                $rels['tb_songs.song_band_id'] = "tb_bands.id_band";
+
+					//$more_words_songs = $manager->select_common("tb_songs", NULL, NULL, " ORDER BY total_words DESC LIMIT 4");
+					$more_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_total_words DESC LIMIT 3");
+
+					$more_unique_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_unique_words DESC LIMIT 3");
+
+					$less_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_total_words LIMIT 3");
+
+					$less_unique_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_unique_words LIMIT 3");
+
 					include_once $GLOBALS['project_path']."views/stats.html";
+
+					echo "<a href='?op=register' class='btn btn-dark color'> Inserir música </a> &nbsp; <a href='?op=list' class='btn btn-dark color'> Lista </a>";
 				break;
 				/*default:
 					include_once $GLOBALS['project_path']."views/content_index.html";

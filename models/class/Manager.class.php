@@ -103,8 +103,8 @@
 			}
 
 			# apenas para testar a query (descomente o echo) - PADRÃO- COMENTADO
-			echo $query;
-			echo "<br>";
+			/*echo $query;
+			echo "<br>";*/
 
 			# preparando consulta
 			$statement = $pdo->prepare($query);

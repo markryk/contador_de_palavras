@@ -1,4 +1,3 @@
-<?php //Connect_em_PDO(); ?>
 <div class="container py-5">
 	<!-- For Demo Purpose-->
   	<!--<header class="text-center mb-5">
@@ -12,80 +11,127 @@
 
   <!-- First Row [Prosucts]-->
 	<h1 class="display-4"> Estatísticas </h1>
+
 	<hr class="my-4">
 	<p class="lead"> Cantor/Banda </p>
 
-  	<!--<h2 class="font-weight-bold mb-2">From the Shop</h2>
-  	<p class="font-italic text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>-->
-  
-  	<div class="row pb-5 mb-4">
-  		<?php
-  			if (!$bandname) echo "Não existem resultados";
-  			else foreach($bandname as $b_n):
-      ?>
-    		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+	<div class="row pb-5 mb-4">
+		<?php
+			if (!$bandname) echo "Não existem resultados";
+			else foreach($bandname as $b_n):
+    ?>
+  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
 
-    			<!-- Card-->
-      		<div class="card rounded shadow-sm border-0">
-        		<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-          		<h5> <a href="#" class="text-dark"> <?= $b_n['band_name']; ?></a></h5>
+  			<!-- Card-->
+    		<div class="card rounded shadow-sm border-0">
+      		<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+        		<h5> <a href="#" class="text-dark"> <?= $b_n['band_name']; ?></a></h5>
 
-          		<p class="">
-                <?php
-                  $bn = $b_n['band_name'];
-                  //$stmt = $conn->prepare("SELECT DISTINCT tb_songs.band_name, counter.count FROM tb_songs LEFT JOIN (SELECT band_name, COUNT(band_name) AS count FROM tb_songs) counter ON counter.band_name = tb_songs.band_name WHERE tb_songs.band_name = $bn ORDER BY counter.count DESC");
+        		<p class="">
+              <?php
+                $count = $manager->select_common("tb_songs", "COUNT", array("song_band_id"=>$b_n['id_band']));
 
-                  //echo $bn;
+                foreach ($count[0] as $c) {
+                	echo ($c == 1) ? $c." música" : $c." músicas";
+                  echo "<br>";
+                }
+              ?>
+            </p>
+       		</div>
+			  </div>
+    	</div>
+	  <?php endforeach; ?>
+	</div>
 
-                  //$result = $manager->select_common("tb_songs", array("song_name"), array("band_name"=>$bn));
-
-                  //$result = $manager->select_special($tables, $rel, array("band_name"=>$bn));
-
-                  $count = $manager->select_common("tb_songs", "COUNT", array("song_band_id"=>$bn));
-
-                  var_dump($count);
-
-                  //$count = $manager->select_special($tables, $rel, array("band_name"=>$bn));
-
-                  foreach ($count[0] as $c) {
-                    echo $c;
-                    echo "<br><br>";
-                    //for ($i=0; $i<$c; $i++) foreach ($result[$i] as $res) echo $res.", <br>";
-                  }
-                ?>
-              </p>
-	       		</div>
-				  </div>
-	    	</div>
-		  <?php endforeach; ?>
-  	</div>
-
-  <!-- First Row [Prosucts]-->
 	<hr class="my-4">
-	<p class="lead"> Músicas </p>
-
-  	<div class="row pb-5 mb-4">
-  		<?php 
-  			if (!$songname) echo "Não existem resultados";
-  			else foreach($songname as $s_n):
-  		?>
-    		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-
-      			<!-- Card-->
-	      		<div class="card rounded shadow-sm border-0">
-	        		<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-		          		<h5> <a href="#" class="text-dark"> <?= $s_n['music_name']; ?></a></h5>-
-		          		<h5> <a href="#" class="text-dark"> <?= $s_n['band_name']; ?></a></h5>
-		          		<p class="text-dark"><?= $s_n['total_words'] ?></p><p class="fs-6"> pal. no total </p>
-		          		<p class="text-dark"><?= $s_n['total_unique_words'] ?></p><p> pal. únicas </p>
-		       			<ul class="list-inline small">
-		           			<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
-		       			</ul>
-		       		</div>
+	<p class="lead"> Músicas com mais palavras no total </p>
+	<div class="row pb-5 mb-4">
+		<?php 
+			if (!$more_words_songs) echo "Não existem resultados";
+			else foreach($more_words_songs as $mws):
+		?>
+  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+    		<!-- Card-->
+      	<div class="card rounded shadow-sm border-0">
+        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+	         	<h5> <a href="#" class="text-dark"> <?= $mws['band_name']; ?></a></h5>-
+	         	<h5> <a href="#" class="text-dark"> <?= $mws['song_name']; ?></a></h5>
+	         	<p class="text-dark"><?= $mws['song_total_words'] ?></p>
+	      		<ul class="list-inline small">
+	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+	      		</ul>
+	      	</div>
 				</div>
-	    	</div>
+    	</div>
+		<?php endforeach; ?>
+  </div>
+
+  <hr class="my-4">
+	<p class="lead"> Músicas com mais palavras únicas </p>
+	<div class="row pb-5 mb-4">
+		<?php 
+			if (!$more_unique_words_songs) echo "Não existem resultados";
+			else foreach($more_unique_words_songs as $muws):
+		?>
+  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+    		<!-- Card-->
+      	<div class="card rounded shadow-sm border-0">
+        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+	         	<h5> <a href="#" class="text-dark"> <?= $muws['band_name']; ?></a></h5>-
+	         	<h5> <a href="#" class="text-dark"> <?= $muws['song_name']; ?></a></h5>
+	         	<p class="text-dark"><?= $muws['song_unique_words'] ?></p>
+	      		<ul class="list-inline small">
+	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+	      		</ul>
+	      	</div>
+				</div>
+    	</div>
+		<?php endforeach; ?>
+  </div>
+
+  <hr class="my-4">
+	<p class="lead"> Músicas com menos palavras no total </p>
+  <div class="row pb-5 mb-4">
+  	<?php 
+  		if (!$less_words_songs) echo "Não existem resultados";
+  		else foreach($less_words_songs as $lws):
+  	?>
+   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+     		<!-- Card-->
+	     	<div class="card rounded shadow-sm border-0">
+	       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+	         	<h5> <a href="#" class="text-dark"> <?= $lws['band_name']; ?></a></h5>-
+	         	<h5> <a href="#" class="text-dark"> <?= $lws['song_name']; ?></a></h5>
+	         	<p class="text-dark"><?= $lws['song_total_words'] ?></p>
+	      		<ul class="list-inline small">
+	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+	      		</ul>
+	      	</div>
+				</div>
+	   	</div>
 		<?php endforeach; ?>  
-  	</div>
-  
+  </div>
+
+  <hr class="my-4">
+	<p class="lead"> Músicas com menos palavras únicas </p>
+  <div class="row pb-5 mb-4">
+  	<?php 
+  		if (!$less_unique_words_songs) echo "Não existem resultados";
+  		else foreach($less_unique_words_songs as $luws):
+  	?>
+   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+     		<!-- Card-->
+	     	<div class="card rounded shadow-sm border-0">
+	       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+	         	<h5> <a href="#" class="text-dark"> <?= $luws['band_name']; ?></a></h5>-
+	         	<h5> <a href="#" class="text-dark"> <?= $luws['song_name']; ?></a></h5>
+	         	<p class="text-dark"><?= $luws['song_unique_words'] ?></p>
+	      		<ul class="list-inline small">
+	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+	      		</ul>
+	      	</div>
+				</div>
+	   	</div>
+		<?php endforeach; ?>  
   </div>
 </div>
