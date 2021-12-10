@@ -111,29 +111,18 @@
 					//include_once $GLOBALS['project_path']."result.php?op=count";
 				break;
 				case 'stats':
-					//include_once $GLOBALS['project_path']."models/class/ConnectPDO.php";
 					$manager = new Manager();
 
-					$song = $manager->select_common("tb_songs", NULL, array("band_name"));
-
-					/*$tables['tb_songs'] = array();
 					$tables['tb_bands'] = array();
-					$tables['tb_albums'] = array();
-					
-					$rel['tb_songs.song_album_id'] = "tb_albums.id_album";
-					$rel['tb_albums.album_band_id'] = "tb_bands.id_band";
-					$rel['tb_songs.song_band_id'] = "tb_bands.id_band";*/
+	                $tables['tb_qtde'] = array();
+	                $rels['tb_bands.id_band'] = "tb_qtde.qtde_band_id";
 
-	                //$pdo = Connect_em_PDO();
-
-	                //$bandname = $manager->select_distinct("tb_bands", "DISTINCT", array("band_name"), NULL);
-	                $bandname = $manager->select_common("tb_bands", NULL, NULL, NULL);
+					$band_qtde = $manager->select_special($tables, $rels, NULL, " ORDER BY qtde_number DESC");
 
 	                $tables['tb_bands'] = array();
 	                $tables['tb_songs'] = array();
 	                $rels['tb_songs.song_band_id'] = "tb_bands.id_band";
 
-					//$more_words_songs = $manager->select_common("tb_songs", NULL, NULL, " ORDER BY total_words DESC LIMIT 4");
 					$more_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_total_words DESC LIMIT 3");
 
 					$more_unique_words_songs = $manager->select_special($tables, $rels, NULL, " ORDER BY song_unique_words DESC LIMIT 3");

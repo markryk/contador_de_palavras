@@ -8,130 +8,191 @@
     	</p>
   	</header>-->
 
-
-  <!-- First Row [Prosucts]-->
 	<h1 class="display-4"> Estatísticas </h1>
 
 	<hr class="my-4">
 	<p class="lead"> Cantor/Banda </p>
 
-	<div class="row pb-5 mb-4">
-		<?php
-			if (!$bandname) echo "Não existem resultados";
-			else foreach($bandname as $b_n):
-    ?>
-  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+	<a data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="true" aria-controls="collapseExample1" class="btn btn_color shadow-sm with-chevron">
+    <p class="text_qtde"> Mostrar <i class="fa fa-angle-down"></i></p>
+  </a>
+						    
+	<div id="collapseExample1" class="collapse">
+	 	<div class="card">
+	 		<div class="card-body card-body-no-border">
 
-  			<!-- Card-->
-    		<div class="card rounded shadow-sm border-0">
-      		<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-        		<h5> <a href="#" class="text-dark"> <?= $b_n['band_name']; ?></a></h5>
+	 			<div class="row pb-5 mb-4">
+					<?php
+						if (!$band_qtde) echo "Não existem resultados";
+						else foreach($band_qtde as $b_q):
+			    ?>
+			  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
 
-        		<p class="">
-              <?php
-                $count = $manager->select_common("tb_songs", "COUNT", array("song_band_id"=>$b_n['id_band']));
+			  			<!-- Card-->
+			    		<div class="card rounded shadow-sm border-0">
+			      		<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+			        		<h5> <a href="#" class="text-dark"> <?= $b_q['band_name']; ?></a></h5>
 
-                foreach ($count[0] as $c) {
-                	echo ($c == 1) ? $c." música" : $c." músicas";
-                  echo "<br>";
-                }
-              ?>
-            </p>
-       		</div>
-			  </div>
-    	</div>
-	  <?php endforeach; ?>
+			        		<p class="">
+			              <?php
+			              	$bq = $b_q['qtde_number'];
+			                echo ($bq == 1) ? $bq." música" : $bq." músicas";
+			                echo "<br>";
+			              ?>
+			            </p>
+			       		</div>
+						  </div>
+			    	</div>
+				  <?php endforeach; ?>
+				</div>
+
+	    </div>
+	  </div>
 	</div>
 
 	<hr class="my-4">
-	<p class="lead"> Músicas com mais palavras no total </p>
-	<div class="row pb-5 mb-4">
-		<?php 
-			if (!$more_words_songs) echo "Não existem resultados";
-			else foreach($more_words_songs as $mws):
-		?>
-  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-    		<!-- Card-->
-      	<div class="card rounded shadow-sm border-0">
-        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-	         	<h5> <a href="#" class="text-dark"> <?= $mws['band_name']; ?></a></h5>-
-	         	<h5> <a href="#" class="text-dark"> <?= $mws['song_name']; ?></a></h5>
-	         	<p class="text-dark"><?= $mws['song_total_words'] ?></p>
-	      		<ul class="list-inline small">
-	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
-	      		</ul>
-	      	</div>
-				</div>
-    	</div>
-		<?php endforeach; ?>
-  </div>
+	<p class="lead"> Músicas com MAIS palavras no TOTAL </p>
+	
+	<a data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="true" aria-controls="collapseExample2" class="btn btn_color shadow-sm with-chevron">
+    <p class="text_qtde"> Mostrar <i class="fa fa-angle-down"></i></p>
+  </a>
+	
+	<div id="collapseExample2" class="collapse">
+	 	<div class="card">
+	 		<div class="card-body card-body-no-border">	   		
 
-  <hr class="my-4">
-	<p class="lead"> Músicas com mais palavras únicas </p>
-	<div class="row pb-5 mb-4">
-		<?php 
-			if (!$more_unique_words_songs) echo "Não existem resultados";
-			else foreach($more_unique_words_songs as $muws):
-		?>
-  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-    		<!-- Card-->
-      	<div class="card rounded shadow-sm border-0">
-        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-	         	<h5> <a href="#" class="text-dark"> <?= $muws['band_name']; ?></a></h5>-
-	         	<h5> <a href="#" class="text-dark"> <?= $muws['song_name']; ?></a></h5>
-	         	<p class="text-dark"><?= $muws['song_unique_words'] ?></p>
-	      		<ul class="list-inline small">
-	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
-	      		</ul>
-	      	</div>
-				</div>
-    	</div>
-		<?php endforeach; ?>
-  </div>
+	 			<div class="row pb-5 mb-4">
+					<?php 
+						if (!$more_words_songs) echo "Não existem resultados";
+						else foreach($more_words_songs as $mws):
+					?>
+			  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+			    		<!-- Card-->
+			      	<div class="card rounded shadow-sm border-0">
+			        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+				         	<h5> <a href="#" class="text-dark"> <?= $mws['band_name']; ?></a></h5>-
+				         	<h5> <a href="#" class="text-dark"> <?= $mws['song_name']; ?></a></h5>
+				         	<p class="text-dark"><?= $mws['song_total_words'] ?></p>
+				      		<ul class="list-inline small">
+				         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+				      		</ul>
+				      	</div>
+							</div>
+			    	</div>
+					<?php endforeach; ?>
+			  </div>
 
-  <hr class="my-4">
-	<p class="lead"> Músicas com menos palavras no total </p>
-  <div class="row pb-5 mb-4">
-  	<?php 
-  		if (!$less_words_songs) echo "Não existem resultados";
-  		else foreach($less_words_songs as $lws):
-  	?>
-   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-     		<!-- Card-->
-	     	<div class="card rounded shadow-sm border-0">
-	       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-	         	<h5> <a href="#" class="text-dark"> <?= $lws['band_name']; ?></a></h5>-
-	         	<h5> <a href="#" class="text-dark"> <?= $lws['song_name']; ?></a></h5>
-	         	<p class="text-dark"><?= $lws['song_total_words'] ?></p>
-	      		<ul class="list-inline small">
-	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
-	      		</ul>
-	      	</div>
-				</div>
-	   	</div>
-		<?php endforeach; ?>  
-  </div>
+	    </div>
+	  </div>
+	</div>	
 
-  <hr class="my-4">
-	<p class="lead"> Músicas com menos palavras únicas </p>
-  <div class="row pb-5 mb-4">
-  	<?php 
-  		if (!$less_unique_words_songs) echo "Não existem resultados";
-  		else foreach($less_unique_words_songs as $luws):
-  	?>
-   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-     		<!-- Card-->
-	     	<div class="card rounded shadow-sm border-0">
-	       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
-	         	<h5> <a href="#" class="text-dark"> <?= $luws['band_name']; ?></a></h5>-
-	         	<h5> <a href="#" class="text-dark"> <?= $luws['song_name']; ?></a></h5>
-	         	<p class="text-dark"><?= $luws['song_unique_words'] ?></p>
-	      		<ul class="list-inline small">
-	         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
-	      		</ul>
-	      	</div>
-				</div>
-	   	</div>
-		<?php endforeach; ?>  
-  </div>
+	<hr class="my-4">
+	<p class="lead"> Músicas com MAIS palavras ÚNICAS </p>
+	
+	<a data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="true" aria-controls="collapseExample3" class="btn btn_color shadow-sm with-chevron">
+    <p class="text_qtde"> Mostrar <i class="fa fa-angle-down"></i></p>
+  </a>
+	
+	<div id="collapseExample3" class="collapse">
+	 	<div class="card">
+	 		<div class="card-body card-body-no-border">	   		
+
+	 			<div class="row pb-5 mb-4">
+					<?php 
+						if (!$more_unique_words_songs) echo "Não existem resultados";
+						else foreach($more_unique_words_songs as $muws):
+					?>
+			  		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+			    		<!-- Card-->
+			      	<div class="card rounded shadow-sm border-0">
+			        	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+				         	<h5> <a href="#" class="text-dark"> <?= $muws['band_name']; ?></a></h5>-
+				         	<h5> <a href="#" class="text-dark"> <?= $muws['song_name']; ?></a></h5>
+				         	<p class="text-dark"><?= $muws['song_unique_words'] ?></p>
+				      		<ul class="list-inline small">
+				         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+				      		</ul>
+				      	</div>
+							</div>
+			    	</div>
+					<?php endforeach; ?>
+			  </div>
+
+	    </div>
+	  </div>
+	</div>
+	
+	<hr class="my-4">
+	<p class="lead"> Músicas com MENOS palavras no TOTAL </p>
+	
+	<a data-toggle="collapse" href="#collapseExample4" role="button" aria-expanded="true" aria-controls="collapseExample4" class="btn btn_color shadow-sm with-chevron">
+    <p class="text_qtde"> Mostrar <i class="fa fa-angle-down"></i></p>
+  </a>
+	
+	<div id="collapseExample4" class="collapse">
+	 	<div class="card">
+	 		<div class="card-body card-body-no-border">	   		
+
+	 			<div class="row pb-5 mb-4">
+			  	<?php 
+			  		if (!$less_words_songs) echo "Não existem resultados";
+			  		else foreach($less_words_songs as $lws):
+			  	?>
+			   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+			     		<!-- Card-->
+				     	<div class="card rounded shadow-sm border-0">
+				       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+				         	<h5> <a href="#" class="text-dark"> <?= $lws['band_name']; ?></a></h5>-
+				         	<h5> <a href="#" class="text-dark"> <?= $lws['song_name']; ?></a></h5>
+				         	<p class="text-dark"><?= $lws['song_total_words'] ?></p>
+				      		<ul class="list-inline small">
+				         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+				      		</ul>
+				      	</div>
+							</div>
+				   	</div>
+					<?php endforeach; ?>  
+			  </div>
+
+	    </div>
+	  </div>
+	</div>
+	
+
+	<hr class="my-4">
+	<p class="lead"> Músicas com MENOS palavras ÚNICAS </p>
+	
+	<a data-toggle="collapse" href="#collapseExample5" role="button" aria-expanded="true" aria-controls="collapseExample5" class="btn btn_color shadow-sm with-chevron">
+    <p class="text_qtde"> Mostrar <i class="fa fa-angle-down"></i></p>
+  </a>
+	
+	<div id="collapseExample5" class="collapse">
+	 	<div class="card">
+	 		<div class="card-body card-body-no-border">	   		
+
+				<div class="row pb-5 mb-4">
+			  	<?php 
+			  		if (!$less_unique_words_songs) echo "Não existem resultados";
+			  		else foreach($less_unique_words_songs as $luws):
+			  	?>
+			   		<div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+			     		<!-- Card-->
+				     	<div class="card rounded shadow-sm border-0">
+				       	<div class="card-body p-4"><!--<img src="https://bootstrapious.com/i/snippets/sn-cards/shoes-1_gthops.jpg" alt="" class="img-fluid d-block mx-auto mb-3">-->
+				         	<h5> <a href="#" class="text-dark"> <?= $luws['band_name']; ?></a></h5>-
+				         	<h5> <a href="#" class="text-dark"> <?= $luws['song_name']; ?></a></h5>
+				         	<p class="text-dark"><?= $luws['song_unique_words'] ?></p>
+				      		<ul class="list-inline small">
+				         		<!--<li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>-->
+				      		</ul>
+				      	</div>
+							</div>
+				   	</div>
+					<?php endforeach; ?>  
+			  </div>
+
+	    </div>
+	  </div>
+	</div>
+  
 </div>
