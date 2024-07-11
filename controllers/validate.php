@@ -13,7 +13,7 @@
 
 			switch ($_GET['op']) {
 				case 'register':
-					include_once $GLOBALS['project_path']."views/register.html";
+					include_once $GLOBALS['project_path']."views/register.phtml";
 				break;
 				case 'list':
 					$manager = new Manager();
@@ -49,7 +49,7 @@
 
 					$filter = "id_song";
 
-					include_once $GLOBALS['project_path']."views/list_common.html";
+					include_once $GLOBALS['project_path']."views/list_common.phtml";
 
 					echo "<a href='?op=register' class='btn btn-dark color'> Inserir música </a> &nbsp; <a href='?op=stats' class='btn btn-dark color'> Estatísticas </a>";
 				break;
@@ -86,7 +86,7 @@
 
 					$filter = "id_song";
 
-					include_once $GLOBALS['project_path']."views/list_common.html";
+					include_once $GLOBALS['project_path']."views/list_common.phtml";
 
 					echo "<a href='?op=register' class='btn btn-dark color'> Inserir música </a> &nbsp; <a href='?op=stats' class='btn btn-dark color'> Estatísticas </a>";
 				break;

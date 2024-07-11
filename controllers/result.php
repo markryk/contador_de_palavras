@@ -183,7 +183,7 @@
 					echo $arr." -> ".$soma."<br>";
 				}
 			}
-			include_once $GLOBALS['project_path']."views/result.html";
+			include_once $GLOBALS['project_path']."views/result.phtml";
 		break;
 
 		case "insert":

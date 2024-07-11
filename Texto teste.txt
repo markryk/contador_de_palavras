@@ -1,0 +1,4 @@
+O rato roeu a roupa do rei de rato roeu a roupa do rei de Roma
+
+DELETE FROM tb_bands;
+ALTER TABLE tb_bands AUTO_INCREMENT = 1;
